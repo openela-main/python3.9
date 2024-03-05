@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 License: Python
 
 
@@ -408,6 +408,20 @@ Patch353: 00353-architecture-names-upstream-downstream.patch
 # The second patch is Red Hat configuration, see KB for documentation:
 # - https://access.redhat.com/articles/7004769
 Patch397: 00397-tarfile-filter.patch
+
+# 00415 #
+# [CVE-2023-27043] gh-102988: Reject malformed addresses in email.parseaddr() (#111116)
+#
+# Detect email address parsing errors and return empty tuple to
+# indicate the parsing error (old API). Add an optional 'strict'
+# parameter to getaddresses() and parseaddr() functions. Patch by
+# Thomas Dwyer.
+#
+# Upstream PR: https://github.com/python/cpython/pull/111116
+#
+# Second patch implmenets the possibility to restore the old behavior via
+# config file or environment variable.
+Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-parseaddr-111116.patch
 
 # (New patches go here ^^^)
 #
@@ -1810,6 +1824,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Thu Jan 04 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-1.1
+- Security fix for CVE-2023-27043
+Resolves: RHEL-5594
+
 * Thu Sep 07 2023 Charalampos Stratakis <cstratak@redhat.com> - 3.9.18-1
 - Update to 3.9.18
 - Security fix for CVE-2023-40217
