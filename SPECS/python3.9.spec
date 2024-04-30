@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 1%{?dist}.1
+Release: 3%{?dist}
 License: Python
 
 
@@ -408,6 +408,12 @@ Patch353: 00353-architecture-names-upstream-downstream.patch
 # The second patch is Red Hat configuration, see KB for documentation:
 # - https://access.redhat.com/articles/7004769
 Patch397: 00397-tarfile-filter.patch
+
+# 00414 #
+#
+# Skip test_pair() and test_speech128() of test_zlib on s390x since
+# they fail if zlib uses the s390x hardware accelerator.
+Patch414: 00414-skip_test_zlib_s390x.patch
 
 # 00415 #
 # [CVE-2023-27043] gh-102988: Reject malformed addresses in email.parseaddr() (#111116)
@@ -1824,9 +1830,13 @@ CheckPython optimized
 # ======================================================
 
 %changelog
-* Thu Jan 04 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-1.1
+* Wed Jan 24 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-3
+- Fix tests on s390x with hw acceleration
+Resolves: RHEL-13043
+
+* Thu Jan 04 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-2
 - Security fix for CVE-2023-27043
-Resolves: RHEL-5594
+Resolves: RHEL-20613
 
 * Thu Sep 07 2023 Charalampos Stratakis <cstratak@redhat.com> - 3.9.18-1
 - Update to 3.9.18
