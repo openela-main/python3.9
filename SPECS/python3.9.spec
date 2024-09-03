@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 3%{?dist}.3
+Release: 3%{?dist}.5
 License: Python
 
 
@@ -454,6 +454,29 @@ Patch427: 00427-CVE-2024-0450.patch
 # CVE-2024-4032: incorrect IPv4 and IPv6 private ranges
 # Upstream issue: https://github.com/python/cpython/issues/113171
 Patch431: 00431-CVE-2024-4032.patch
+
+# 00435 # f2924d30f4dd44804219c10410a57dd96764d297
+# gh-121650: Encode newlines in headers, and verify headers are sound (GH-122233)
+#
+# Per RFC 2047:
+#
+# > [...] these encoding schemes allow the
+# > encoding of arbitrary octet values, mail readers that implement this
+# > decoding should also ensure that display of the decoded data on the
+# > recipient's terminal will not cause unwanted side-effects
+#
+# It seems that the "quoted-word" scheme is a valid way to include
+# a newline character in a header value, just like we already allow
+# undecodable bytes or control characters.
+# They do need to be properly quoted when serialized to text, though.
+#
+# This should fail for custom fold() implementations that aren't careful
+# about newlines.
+Patch435: 00435-gh-121650-encode-newlines-in-headers-and-verify-headers-are-sound-gh-122233.patch
+
+# 00436 # 506dd77b7132f69ada7185b8bb91eba0e1296aa8
+# [CVE-2024-8088] gh-122905: Sanitize names in zipfile.Path.
+Patch436: 00436-cve-2024-8088-gh-122905-sanitize-names-in-zipfile-path.patch
 
 # (New patches go here ^^^)
 #
@@ -1856,6 +1879,14 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Fri Aug 23 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.9.18-3.5
+- Security fix for CVE-2024-8088
+Resolves: RHEL-55968
+
+* Tue Aug 13 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-3.4
+- Security fix for CVE-2024-6923
+Resolves: RHEL-53044
+
 * Wed Jul 03 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.18-3.3
 - Security fix for CVE-2024-4032
 Resolves: RHEL-44106
