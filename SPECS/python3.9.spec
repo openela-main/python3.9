@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 3%{?dist}.5
+Release: 3%{?dist}.6
 License: Python
 
 
@@ -477,6 +477,15 @@ Patch435: 00435-gh-121650-encode-newlines-in-headers-and-verify-headers-are-soun
 # 00436 # 506dd77b7132f69ada7185b8bb91eba0e1296aa8
 # [CVE-2024-8088] gh-122905: Sanitize names in zipfile.Path.
 Patch436: 00436-cve-2024-8088-gh-122905-sanitize-names-in-zipfile-path.patch
+
+# 00437 #
+# CVE-2024-6232
+#
+# Security fix for CVE-2024-6232
+# ResolveS: RHEL- 57421
+#
+#
+Patch437: 00437-CVE-2024-6232.patch
 
 # (New patches go here ^^^)
 #
@@ -1879,6 +1888,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Fri Oct 04 2024 Satish Mane <satmane@redhat.com> - 3.9.18-3.6
+- Fix: CVE-2024-6232
+- Resolves: RHEL-57421
+
 * Fri Aug 23 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.9.18-3.5
 - Security fix for CVE-2024-8088
 Resolves: RHEL-55968
