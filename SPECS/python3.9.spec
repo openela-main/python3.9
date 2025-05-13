@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Python
 
 
@@ -426,7 +426,7 @@ Patch397: 00397-tarfile-filter.patch
 #
 # Upstream PR: https://github.com/python/cpython/pull/111116
 #
-# Second patch implmenets the possibility to restore the old behavior via
+# This patch implements the possibility to restore the old behavior via
 # config file or environment variable.
 Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-parseaddr-111116.patch
 
@@ -436,6 +436,10 @@ Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-par
 # Feeding the parser by too small chunks defers parsing to prevent
 # CVE-2023-52425. Future versions of Expat may be more reactive.
 Patch422: 00422-fix-tests-for-xmlpullparser-with-expat-2-6-0.patch
+
+# 00450 # 4ab8663661748eb994c09e4ae89f59eb84c5d3ea
+# CVE-2025-0938: Disallow square brackets ([ and ]) in domain names for parsed URLs
+Patch450: 00450-cve-2025-0938-disallow-square-brackets-and-in-domain-names-for-parsed-urls.patch
 
 # (New patches go here ^^^)
 #
@@ -1841,15 +1845,19 @@ CheckPython optimized
 # ======================================================
 
 %changelog
-* Thu Dec 05 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.21-1
+* Mon Feb 10 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2
+- Security fix for CVE-2025-0938
+Resolves: RHEL-77263
+
+* Wed Dec 04 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.21-1
 - Update to 3.9.21
 - Security fix for CVE-2024-11168 and CVE-2024-9287
-Resolves: RHEL-64888
-Resolves: RHEL-67259
+Resolves: RHEL-64889
+Resolves: RHEL-69942
 
-* Wed Sep 11 2024 Lumír Balhar <lbalhar@redhat.com> - 3.9.19-8.1
-- Security fix for CVE-2024-6232
-Resolves: RHEL-57420
+* Mon Sep 09 2024 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.20-1
+- Update to 3.9.20
+Resolves: RHEL-57422
 
 * Fri Aug 23 2024 Charalampos Stratakis <cstratak@redhat.com> - 3.9.19-8
 - Security fix for CVE-2024-8088
