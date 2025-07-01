@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}
+Release: 2%{?dist}.1
 License: Python
 
 
@@ -440,6 +440,16 @@ Patch422: 00422-fix-tests-for-xmlpullparser-with-expat-2-6-0.patch
 # 00450 # 4ab8663661748eb994c09e4ae89f59eb84c5d3ea
 # CVE-2025-0938: Disallow square brackets ([ and ]) in domain names for parsed URLs
 Patch450: 00450-cve-2025-0938-disallow-square-brackets-and-in-domain-names-for-parsed-urls.patch
+
+# 00465 #
+# Security fixes for CVE-2025-4517, CVE-2025-4330, CVE-2025-4138, CVE-2024-12718, CVE-2025-4435 on tarfile
+#
+# The patch consist of the following commits:
+# - https://github.com/python/cpython/commit/00af9794dd118f7b835dd844b2b609a503ad951e
+#   adds a new "strict" argument to realpath()
+# - https://github.com/python/cpython/commit/dd8f187d0746da151e0025c51680979ac5b4cfb1
+#   fixes multiple CVE fixes in the tarfile module
+Patch465: 00465-tarfile-cves.patch
 
 # (New patches go here ^^^)
 #
@@ -1845,6 +1855,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Fri Jun 27 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2.1
+- Security fixes for CVE-2025-4517, CVE-2025-4330, CVE-2025-4138, CVE-2024-12718, CVE-2025-4435
+Resolves: RHEL-98053, RHEL-98025, RHEL-98243, RHEL-98195, RHEL-98219
+
 * Mon Feb 10 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2
 - Security fix for CVE-2025-0938
 Resolves: RHEL-77263
