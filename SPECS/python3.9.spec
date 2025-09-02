@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}.1
+Release: 2%{?dist}.2
 License: Python
 
 
@@ -450,6 +450,14 @@ Patch450: 00450-cve-2025-0938-disallow-square-brackets-and-in-domain-names-for-p
 # - https://github.com/python/cpython/commit/dd8f187d0746da151e0025c51680979ac5b4cfb1
 #   fixes multiple CVE fixes in the tarfile module
 Patch465: 00465-tarfile-cves.patch
+
+# 00467 #
+# CVE-2025-8194
+#
+# tarfile now validates archives to ensure member offsets are non-negative.
+#
+# Upstream issue: https://github.com/python/cpython/issues/130577
+Patch467: 00467-CVE-2025-8194.patch
 
 # (New patches go here ^^^)
 #
@@ -1855,6 +1863,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Tue Aug 19 2025 Lumír Balhar <lbalhar@redhat.com> - 3.9.21-2.2
+- Security fix for CVE-2025-8194
+Resolves: RHEL-106375
+
 * Fri Jun 27 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2.1
 - Security fixes for CVE-2025-4517, CVE-2025-4330, CVE-2025-4138, CVE-2024-12718, CVE-2025-4435
 Resolves: RHEL-98053, RHEL-98025, RHEL-98243, RHEL-98195, RHEL-98219
