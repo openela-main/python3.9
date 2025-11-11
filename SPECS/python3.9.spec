@@ -13,11 +13,11 @@ URL: https://www.python.org/
 
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
-%global general_version %{pybasever}.21
+%global general_version %{pybasever}.23
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}.2
+Release: 2%{?dist}
 License: Python
 
 
@@ -269,6 +269,7 @@ BuildRequires: valgrind-devel
 BuildRequires: xz-devel
 BuildRequires: zlib-devel
 
+BuildRequires: systemtap-sdt-devel
 BuildRequires: /usr/bin/dtrace
 
 # workaround http://bugs.python.org/issue19804 (test_uuid requires ifconfig)
@@ -436,20 +437,6 @@ Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-par
 # Feeding the parser by too small chunks defers parsing to prevent
 # CVE-2023-52425. Future versions of Expat may be more reactive.
 Patch422: 00422-fix-tests-for-xmlpullparser-with-expat-2-6-0.patch
-
-# 00450 # 4ab8663661748eb994c09e4ae89f59eb84c5d3ea
-# CVE-2025-0938: Disallow square brackets ([ and ]) in domain names for parsed URLs
-Patch450: 00450-cve-2025-0938-disallow-square-brackets-and-in-domain-names-for-parsed-urls.patch
-
-# 00465 #
-# Security fixes for CVE-2025-4517, CVE-2025-4330, CVE-2025-4138, CVE-2024-12718, CVE-2025-4435 on tarfile
-#
-# The patch consist of the following commits:
-# - https://github.com/python/cpython/commit/00af9794dd118f7b835dd844b2b609a503ad951e
-#   adds a new "strict" argument to realpath()
-# - https://github.com/python/cpython/commit/dd8f187d0746da151e0025c51680979ac5b4cfb1
-#   fixes multiple CVE fixes in the tarfile module
-Patch465: 00465-tarfile-cves.patch
 
 # 00467 #
 # CVE-2025-8194
@@ -1863,13 +1850,18 @@ CheckPython optimized
 # ======================================================
 
 %changelog
-* Tue Aug 19 2025 Lumír Balhar <lbalhar@redhat.com> - 3.9.21-2.2
+* Tue Aug 19 2025 Lumír Balhar <lbalhar@redhat.com> - 3.9.23-2
 - Security fix for CVE-2025-8194
-Resolves: RHEL-106375
+Resolves: RHEL-106374
 
-* Fri Jun 27 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2.1
+* Fri Jun 27 2025 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.23-1
+- Update to 3.9.23
 - Security fixes for CVE-2025-4517, CVE-2025-4330, CVE-2025-4138, CVE-2024-12718, CVE-2025-4435
-Resolves: RHEL-98053, RHEL-98025, RHEL-98243, RHEL-98195, RHEL-98219
+Resolves: RHEL-98051, RHEL-98024, RHEL-98242, RHEL-98193, RHEL-98218
+
+* Mon Jun 23 2025 Tobias Urdin <tobias.urdin@binero.com> - 3.9.21-3
+- Add systemtap-sdt-devel build dependency
+Resolves: RHEL-99500
 
 * Mon Feb 10 2025 Charalampos Stratakis <cstratak@redhat.com> - 3.9.21-2
 - Security fix for CVE-2025-0938
