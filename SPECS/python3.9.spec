@@ -13,7 +13,7 @@ URL: https://www.python.org/
 
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
-%global general_version %{pybasever}.23
+%global general_version %{pybasever}.25
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
@@ -321,7 +321,7 @@ Patch1: 00001-rpath.patch
 # See https://bugzilla.redhat.com/show_bug.cgi?id=556092
 Patch111: 00111-no-static-lib.patch
 
-# 00189 # d06cf137c00fd3907b436fdb92a8f007a7f2fb50
+# 00189 # 0c6dd5d318a22bbe89e09e1cd5513eaaca549aa5
 # Instead of bundled wheels, use our RPM packaged wheels
 #
 # We keep them in /usr/share/python-wheels
@@ -334,7 +334,7 @@ Patch189: 00189-use-rpm-wheels.patch
 # When the bundled setuptools/pip wheel is updated, the patch no longer applies cleanly.
 # In such cases, the patch needs to be amended and the versions updated here:
 %global pip_version 23.0.1
-%global setuptools_version 58.1.0
+%global setuptools_version 79.0.1
 
 # 00251 # 1b1047c14ff98eae6d355b4aac4df3e388813f62
 # Change user install location
@@ -437,14 +437,6 @@ Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-par
 # Feeding the parser by too small chunks defers parsing to prevent
 # CVE-2023-52425. Future versions of Expat may be more reactive.
 Patch422: 00422-fix-tests-for-xmlpullparser-with-expat-2-6-0.patch
-
-# 00467 #
-# CVE-2025-8194
-#
-# tarfile now validates archives to ensure member offsets are non-negative.
-#
-# Upstream issue: https://github.com/python/cpython/issues/130577
-Patch467: 00467-CVE-2025-8194.patch
 
 # (New patches go here ^^^)
 #
@@ -1502,6 +1494,10 @@ CheckPython optimized
 %dir %{pylibdir}/site-packages/
 %dir %{pylibdir}/site-packages/__pycache__/
 %{pylibdir}/site-packages/README.txt
+
+%exclude %{pylibdir}/_sysconfigdata_d_linux_%{platform_triplet}.py
+%exclude %{pylibdir}/__pycache__/_sysconfigdata_d_linux_%{platform_triplet}%{bytecode_suffixes}
+
 %{pylibdir}/*.py
 %dir %{pylibdir}/__pycache__/
 %{pylibdir}/__pycache__/*%{bytecode_suffixes}
@@ -1827,6 +1823,9 @@ CheckPython optimized
 %{dynload_dir}/_testinternalcapi.%{SOABI_debug}.so
 %{dynload_dir}/_testmultiphase.%{SOABI_debug}.so
 
+%{pylibdir}/_sysconfigdata_d_linux_%{platform_triplet}.py
+%{pylibdir}/__pycache__/_sysconfigdata_d_linux_%{platform_triplet}%{bytecode_suffixes}
+
 %endif # with debug_build
 
 # We put the debug-gdb.py file inside /usr/lib/debug to avoid noise from ldconfig
@@ -1850,6 +1849,15 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Mon Nov 10 2025 Tomas Orsava <torsava@redhat.com> - 3.9.25-2
+- Move _sysconfigdata_d_linux*.py to the debug subpackage
+
+* Mon Nov 03 2025 Karolina Surma <ksurma@redhat.com> - 3.9.25-1
+- Update to Python 3.9.25
+
+* Fri Oct 10 2025 Karolina Surma <ksurma@redhat.com> - 3.9.24-1
+- Update to Python 3.9.24
+
 * Tue Aug 19 2025 Lumír Balhar <lbalhar@redhat.com> - 3.9.23-2
 - Security fix for CVE-2025-8194
 Resolves: RHEL-106374
