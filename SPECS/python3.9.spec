@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Python
 
 
@@ -437,6 +437,13 @@ Patch415: 00415-cve-2023-27043-gh-102988-reject-malformed-addresses-in-email-par
 # Feeding the parser by too small chunks defers parsing to prevent
 # CVE-2023-52425. Future versions of Expat may be more reactive.
 Patch422: 00422-fix-tests-for-xmlpullparser-with-expat-2-6-0.patch
+
+# 00471 # fc5f344f7e15c13dbf41824a1b7a82d92205f79d
+# CVE-2025-12084
+#
+# * gh-142145: Remove quadratic behavior in node ID cache clearing (GH-142146)
+# * gh-142754: Ensure that Element & Attr instances have the ownerDocument attribute (GH-142794)
+Patch471: 00471-cve-2025-12084.patch
 
 # (New patches go here ^^^)
 #
@@ -1849,6 +1856,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Wed Jan 14 2026 Lumír Balhar <lbalhar@redhat.com> - 3.9.25-3
+- Security fix for CVE-2025-12084
+Resolves: RHEL-135897
+
 * Mon Nov 10 2025 Tomas Orsava <torsava@redhat.com> - 3.9.25-2
 - Move _sysconfigdata_d_linux*.py to the debug subpackage
 
