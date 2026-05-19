@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 5%{?dist}
+Release: 7%{?dist}
 License: Python
 
 
@@ -475,6 +475,26 @@ Patch475: 00475-cve-2025-15367.patch
 #
 # gh-144125: email: verify headers are sound in BytesGenerator
 Patch476: 00476-cve-2026-1299.patch
+
+# 00478 # 88bb1e37c971fd1d6bda82a68b5ad873ed099f08
+# CVE-2026-4519
+#
+# Reject leading dashes in webbrowser URLs (GH-143931) (GH-146359)
+#
+# Cherry-picked from Python 3.10: ad4d5ba32af4d80b0dfa2ba9d8203bfb219e60a5
+Patch478: 00478-cve-2026-4519.patch
+
+# 00480 # 9f4b1483ecfbc8c08117133c239fba544fcb42e7
+# CVE-2026-4786
+#
+# Fix webbrowser `%%action` substitution bypass of dash-prefix check
+Patch480: 00480-cve-2026-4786.patch
+
+# 00482 # 51e25e8a804257b707e2021655037d07dcfa9cd6
+# CVE-2026-6100
+#
+# Fix a possible UAF in {LZMA,BZ2,_Zlib}Decompressor
+Patch482: 00482-cve-2026-6100.patch
 
 # (New patches go here ^^^)
 #
@@ -1887,6 +1907,14 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Fri Apr 17 2026 Charalampos Stratakis <cstratak@redhat.com> - 3.9.25-7
+- Security fixes for CVE-2026-4786 and CVE-2026-6100
+Resolves: RHEL-167919, RHEL-168161
+
+* Thu Mar 26 2026 Lumír Balhar <lbalhar@redhat.com> - 3.9.25-6
+- Security fix for CVE-2026-4519
+Resolves: RHEL-158117
+
 * Mon Mar 09 2026 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.9.25-5
 - Rebuilding previous fixes for different build target
 Related: RHEL-143117, RHEL-143174, RHEL-144897
