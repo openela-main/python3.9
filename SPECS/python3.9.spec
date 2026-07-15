@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 7%{?dist}
+Release: 7%{?dist}.2
 License: Python
 
 
@@ -495,6 +495,29 @@ Patch480: 00480-cve-2026-4786.patch
 #
 # Fix a possible UAF in {LZMA,BZ2,_Zlib}Decompressor
 Patch482: 00482-cve-2026-6100.patch
+
+# 00489 # 67185f85f0bd506e1814a2a2f5580bad5b95ce45
+# Use BIO_eof to detect EOF for SSL_FILETYPE_ASN1
+#
+# In PEM, we need to parse until error and then suppress `PEM_R_NO_START_LINE`, because PEM allows arbitrary leading and trailing data. DER, however, does not. Parsing until error and suppressing `ASN1_R_HEADER_TOO_LONG` doesn't quite work because that error also covers some cases that should be rejected.
+#
+# Instead, check `BIO_eof` early and stop the loop that way.
+#
+# This fixes https://github.com/python/cpython/issues/151504 and adds compatibility with OpenSSL 3.5.7+
+#
+# (cherry-picked from commit acfe02f3b05436658d92add6b168538b30f357f0)
+Patch489: 00489-openssl-3.5.7.patch
+
+# 00490 #
+# CVE-2026-15308
+#
+# gh-153030: Fix quadratic complexity in incremental parsing in HTMLParser (GH-153031) (GH-153038)
+#
+# When an unterminated construct (e.g. a tag or comment) spanned many
+# feed() calls, rescanning the growing buffer and concatenating new data
+# onto it were both quadratic.  New data is now accumulated in a list and
+# only joined and parsed once enough has piled up.
+Patch490: 00490-cve-2026-15308.patch
 
 # (New patches go here ^^^)
 #
@@ -1907,6 +1930,14 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Mon Jul 13 2026 Lukáš Zachar <lzachar@redhat.com> - 3.9.25-7.2
+- Security fix for CVE-2026-15308
+Resolves: RHEL-193786
+
+* Thu Jul 02 2026 Miro Hrončok <mhroncok@redhat.com> - 3.9.25-7.1
+- Fix ssl.SSLError: [ASN1: NOT_ENOUGH_DATA] not enough data with OpenSSL 3.5.7+
+Resolves: RHEL-194207
+
 * Fri Apr 17 2026 Charalampos Stratakis <cstratak@redhat.com> - 3.9.25-7
 - Security fixes for CVE-2026-4786 and CVE-2026-6100
 Resolves: RHEL-167919, RHEL-168161
