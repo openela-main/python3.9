@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 7%{?dist}.2
+Release: 7%{?dist}.3
 License: Python
 
 
@@ -518,6 +518,12 @@ Patch489: 00489-openssl-3.5.7.patch
 # onto it were both quadratic.  New data is now accumulated in a list and
 # only joined and parsed once enough has piled up.
 Patch490: 00490-cve-2026-15308.patch
+
+# 00492 #
+# CVE-2026-11940
+#
+# Fix symlink escape via tarfile hardlink-extraction fallback
+Patch492: 00492-cve-2026-11940.patch
 
 # (New patches go here ^^^)
 #
@@ -1930,6 +1936,10 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Thu Aug 06 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 3.9.25-7.3
+- Security fix for CVE-2026-11940
+Resolves: RHEL-227228
+
 * Mon Jul 13 2026 Lukáš Zachar <lzachar@redhat.com> - 3.9.25-7.2
 - Security fix for CVE-2026-15308
 Resolves: RHEL-193786
