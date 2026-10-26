@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 7%{?dist}.3
+Release: 7%{?dist}.6
 License: Python
 
 
@@ -524,6 +524,27 @@ Patch490: 00490-cve-2026-15308.patch
 #
 # Fix symlink escape via tarfile hardlink-extraction fallback
 Patch492: 00492-cve-2026-11940.patch
+
+# 00495 #
+# CVE-2026-12345
+#
+# Fix race condition in the cleanup of tempfile.TemporaryDirectory
+# https://github.com/python/cpython/commit/5c20517a4fc56683efe63a7751020db9573f538d
+Patch495: 00495-cve-2026-12345.patch
+
+# 00496 #
+# CVE-2026-19445
+#
+# Fix use-after-free for server-side SSLContext with sni_callback
+# https://github.com/python/cpython/commit/34a53dce8174da2fceb12fe084a4def02a10053d
+Patch496: 00496-cve-2026-19445.patch
+
+# 00497 #
+# CVE-2026-19553
+#
+# gh-156793: Validate SSLContext.wrap_bio() parameters like wrap_socket()
+# https://github.com/python/cpython/commit/1697ea386c707142555d98a1263176bbbc014a96.patch
+Patch497: 00497-cve-2026-19553.patch
 
 # (New patches go here ^^^)
 #
@@ -1936,6 +1957,18 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Wed Oct 14 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 3.9.25-7.6
+- CVE-2026-19553 python3.9: python: Certificate verification bypass via missing server_hostname validation in SSLContext.wrap_bio()
+Resolves: RHEL-274143
+
+* Mon Oct 12 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 3.9.25-7.5
+- CVE-2026-19445 python3.9: Use-after-free of a server-side SSLContext when sni_callback switches contexts
+Resolves: RHEL-276263
+
+* Wed Sep 30 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 3.9.25-7.4
+- CVE-2026-12345 python3.9: python: Arbitrary file deletion via race condition during temporary directory cleanup
+Resolves: RHEL-272937
+
 * Thu Aug 06 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 3.9.25-7.3
 - Security fix for CVE-2026-11940
 Resolves: RHEL-227228
